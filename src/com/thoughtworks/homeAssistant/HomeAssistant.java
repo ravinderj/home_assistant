@@ -1,48 +1,32 @@
 package com.thoughtworks.homeAssistant;
 
 
-import javax.swing.*;
 import java.util.HashMap;
 
 public class HomeAssistant {
 
   private final HashMap<String, Action> actions;
-  private SquareLight squareSquareLight;
-  private CircularLight circularLight;
-  private HomeTheatre homeTheatre;
 
   public HomeAssistant() {
     this.actions = new HashMap<>();
   }
 
   public void add(SquareLight squareLight) {
-    actions.put("turn on light",()=>);
+    actions.put("turn on light",()->squareLight.turnOn());
+    actions.put("turn off light",()->squareLight.turnOff());
   }
 
-  public void add(CircularLight light) {
-    this.circularLight = light;
+  public void add(CircularLight circularLight) {
+    actions.put("switch on light",()->circularLight.switchOn());
+    actions.put("switch off light",()->circularLight.switchOff());
   }
 
   public void add(HomeTheatre homeTheatre) {
-    this.homeTheatre = homeTheatre;
+    actions.put("play music",()->homeTheatre.playMusic());
   }
 
   public void listen(String command) {
-    if (command.equals("turn on light")) {
-      squareSquareLight.turnOn();
-    }
-    else if(command.equals("turn off light")){
-      squareSquareLight.turnOff();
-    }
-    else if(command.equals("switch on light")) {
-      circularLight.switchOn();
-    }
-    else if(command.equals("switch off light")) {
-      circularLight.switchOff();
-    }
-    else if(command.equals("play music")) {
-      homeTheatre.playMusic();
-    }
+    Action action = actions.get(command);
+    action.execute();
   }
-
 }

@@ -1,5 +1,5 @@
 package com.thoughtworks.homeAssistant;
 
-public class Action {
-  
+interface Action {
+  void execute();
 }
