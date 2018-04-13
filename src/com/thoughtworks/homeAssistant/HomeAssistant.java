@@ -1,32 +1,36 @@
 package com.thoughtworks.homeAssistant;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HomeAssistant {
 
-  private final HashMap<String, Action> actions;
+  private final HashMap<String, Command> commands;
+  private ArrayList<Command> previousCommands;
 
   public HomeAssistant() {
-    this.actions = new HashMap<>();
+    this.commands = new HashMap<>();
+    this.previousCommands = new ArrayList<>();
+
   }
 
-  public void add(SquareLight squareLight) {
-    actions.put("turn on light",()->squareLight.turnOn());
-    actions.put("turn off light",()->squareLight.turnOff());
+  public void add(String instruction, Command command) {
+    commands.put(instruction, command);
   }
 
-  public void add(CircularLight circularLight) {
-    actions.put("switch on light",()->circularLight.switchOn());
-    actions.put("switch off light",()->circularLight.switchOff());
-  }
-
-  public void add(HomeTheatre homeTheatre) {
-    actions.put("play music",()->homeTheatre.playMusic());
-  }
-
-  public void listen(String command) {
-    Action action = actions.get(command);
-    action.execute();
+  public void listen(String instruction) {
+    if(instruction=="undo"){
+      Command command = previousCommands.get(previousCommands.size()-1);
+      command.undo();
+      previousCommands.remove(command);
+      return;
+    }
+    Command command = commands.get(instruction);
+    if (command != null){
+      previousCommands.add(command);
+      command.execute();
+      return;
+    }
   }
 }

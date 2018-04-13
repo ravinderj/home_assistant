@@ -1,5 +1,7 @@
 package com.thoughtworks.homeAssistant;
 
-interface Action {
+interface Command {
   void execute();
+
+  void undo();
 }

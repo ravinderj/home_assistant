@@ -18,40 +18,84 @@ public class HomeAssistantTest {
 
   @Test
   public void shouldTurnOnTheLightBulb() {
-    SquareLight squareLight = mock(SquareLight.class);
-    homeAssistant.add(squareLight);
+    Command turnOn = mock(TurnOn.class);
+    homeAssistant.add("turn on light", turnOn);
     homeAssistant.listen("turn on light");
-    verify(squareLight).turnOn();
+    verify(turnOn).execute();
   }
   @Test
   public void shouldTurnOffTheLightBulb() {
-    SquareLight squareLight = mock(SquareLight.class);
-    homeAssistant.add(squareLight);
+    Command turnOff = mock(TurnOff.class);
+    homeAssistant.add("turn off light", turnOff);
     homeAssistant.listen("turn off light");
-    verify(squareLight).turnOff();
+    verify(turnOff).execute();
   }
 
   @Test
   public void shouldSwitchOnCircleLight() {
-    CircularLight circularLight = mock(CircularLight.class);
-    homeAssistant.add(circularLight);
+    Command switchOn = mock(SwitchOn.class);
+    homeAssistant.add("switch on light", switchOn);
     homeAssistant.listen("switch on light");
-    verify(circularLight).switchOn();
+    verify(switchOn).execute();
   }
 
   @Test
-  public void shouldSwitchOffCircleLight() {
-    CircularLight circularLight = mock(CircularLight.class);
-    homeAssistant.add(circularLight);
+  public void shouldSwitchOffCircleLight(){
+    Command switchOff = mock(SwitchOff.class);
+    homeAssistant.add("switch off light", switchOff);
     homeAssistant.listen("switch off light");
-    verify(circularLight).switchOff();
+    verify(switchOff).execute();
   }
 
   @Test
   public void shouldPlayMusic() {
-    HomeTheatre homeTheatre = mock(HomeTheatre.class);
-    homeAssistant.add(homeTheatre);
+    Command playMusic = mock(PlayMusic.class);
+    homeAssistant.add("play music", playMusic);
     homeAssistant.listen("play music");
-    verify(homeTheatre).playMusic();
+    verify(playMusic).execute();
+  }
+
+  @Test
+  public void shouldIncreaseVolumeOfHomeTheatre() {
+    Command volumeUp = mock(VolumeUp.class);
+    homeAssistant.add("volume up", volumeUp);
+    homeAssistant.listen("volume up");
+    verify(volumeUp).execute();
+  }
+  @Test
+  public void shouldDecreaseVolumeOfHomeTheatre() {
+    Command volumeDown = mock(VolumeDown.class);
+    homeAssistant.add("volume down", volumeDown);
+    homeAssistant.listen("volume down");
+    verify(volumeDown).execute();
+  }
+
+  @Test
+  public void shouldIncreaseMaxVolumeAndTurnOnAllTheLightsForParty() {
+    Command party = mock(Party.class);
+    homeAssistant.add("party",party);
+    homeAssistant.listen("party");
+    verify(party).execute();
+  }
+
+  @Test
+  public void shouldNotDoAnyThingIfCommandIsNotAvailable() {
+    homeAssistant.listen("Don't do anything");
+  }
+
+  @Test
+  public void shouldBeAbleUndoTheCommand() {
+    Command turnOn = mock(TurnOn.class);
+    Command switchOff = mock(SwitchOff.class);
+    homeAssistant.add("switch off light", switchOff);
+    homeAssistant.add("turn on light", turnOn);
+    homeAssistant.listen("turn on light");
+    verify(turnOn).execute();
+    homeAssistant.listen("switch off light");
+    verify(switchOff).execute();
+    homeAssistant.listen("undo");
+    verify(switchOff).undo();
+    homeAssistant.listen("undo");
+    verify(turnOn).undo();
   }
 }
