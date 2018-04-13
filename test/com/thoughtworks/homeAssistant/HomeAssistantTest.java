@@ -19,39 +19,39 @@ public class HomeAssistantTest {
   @Test
   public void shouldTurnOnTheLightBulb() {
     SquareLight squareLight = mock(SquareLight.class);
-    homeAssistant.addSquareLight(squareLight);
-    homeAssistant.listen(Instructions.TURN_ON_LIGHT);
+    homeAssistant.add(squareLight);
+    homeAssistant.listen("turn on light");
     verify(squareLight).turnOn();
   }
   @Test
   public void shouldTurnOffTheLightBulb() {
     SquareLight squareLight = mock(SquareLight.class);
-    homeAssistant.addSquareLight(squareLight);
-    homeAssistant.listen(Instructions.TURN_OFF);
+    homeAssistant.add(squareLight);
+    homeAssistant.listen("turn off light");
     verify(squareLight).turnOff();
   }
 
   @Test
   public void shouldSwitchOnCircleLight() {
     CircularLight circularLight = mock(CircularLight.class);
-    homeAssistant.addCircularLight(circularLight);
-    homeAssistant.listen(Instructions.SWITCH_ON_LIGHT);
+    homeAssistant.add(circularLight);
+    homeAssistant.listen("switch on light");
     verify(circularLight).switchOn();
   }
 
   @Test
   public void shouldSwitchOffCircleLight() {
     CircularLight circularLight = mock(CircularLight.class);
-    homeAssistant.addCircularLight(circularLight);
-    homeAssistant.listen(Instructions.SWITCH_OFF_LIGHT);
+    homeAssistant.add(circularLight);
+    homeAssistant.listen("switch off light");
     verify(circularLight).switchOff();
   }
 
   @Test
   public void shouldPlayMusic() {
     HomeTheatre homeTheatre = mock(HomeTheatre.class);
-    homeAssistant.addHomeTheatre(homeTheatre);
-    homeAssistant.listen(Instructions.PLAY_MUSIC);
+    homeAssistant.add(homeTheatre);
+    homeAssistant.listen("play music");
     verify(homeTheatre).playMusic();
   }
 }
